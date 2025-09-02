@@ -1,0 +1,16 @@
+# Voice Journal Application Dependencies
+
+# Audio processing and recording
+sounddevice
+numpy
+scipy
+
+# AI/ML for transcription
+openai-whisper
+
+# HTTP requests for Ollama API
+requests
+
+# Optional: For better audio format support
+librosa
+soundfile
