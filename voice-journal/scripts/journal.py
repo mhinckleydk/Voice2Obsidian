@@ -52,15 +52,20 @@ def stop_recording_and_transcribe(stream):
     # Save audio to temporary file
     audio_array = np.array(recording_data, dtype=np.float32)
     timestamp = int(time.time())
-    filename = f"sessions/recording_{timestamp}.wav"
+    
+    # Get the parent directory of the scripts folder (voice-journal)
+    script_dir = Path(__file__).parent
+    sessions_dir = script_dir.parent / "sessions"
+    sessions_dir.mkdir(exist_ok=True)  # Create sessions directory if it doesn't exist
+    filename = sessions_dir / f"recording_{timestamp}.wav"
     
     from scipy.io.wavfile import write
-    write(filename, SAMPLE_RATE, (audio_array * 32767).astype(np.int16))
+    write(str(filename), SAMPLE_RATE, (audio_array * 32767).astype(np.int16))
     
     # Transcribe with Whisper
     print("🔄 Transcribing...")
     model = whisper.load_model("base")
-    result = model.transcribe(filename)
+    result = model.transcribe(str(filename))
     
     print(f"📝 Transcription:\n{result['text']}")
     return result['text']
